@@ -1,31 +1,39 @@
-# Application factory function(Define the app instance within the function) helps to rellate with different 3rd party libraries
+
 from flask import Flask
-from app.extensions import db,migrate,jwt
-from app.controllers.auth.auth_controller import auth
+from app.extensions import db, migrate, jwt
+from flask_bcrypt import Bcrypt
+
+# Initialize Bcrypt outside the create_app function
+bcrypt = Bcrypt()
+
+from app.Controllers.auth.auth_controllers import auth
 
 def create_app():
+    # Application factory function
+    app = Flask(__name__)
+    app.config.from_object('config.Config')
     
-    app = Flask(__name__) 
-    app.config.from_object('config.Config')   
-    db.init_app(app)   
-    migrate.init_app(app,db)    
+    # Initialize extensions
+    db.init_app(app)
+    migrate.init_app(app, db)
     jwt.init_app(app)
-   
     
-    
-    # importing and registering models
-    from app.models.author_model import Author
-    from app.models.company_model import Company
-    from app.models.books_model import Book
-    
-    
-    #registering blue prints
+    # Import models
+    from app.Models.author_model import Author
+    from app.Models.book_model import Book
+    from app.Models.company_model import Company
+
+    # Register blueprints
     app.register_blueprint(auth)
-    
-    
-    @app.route('/')
+
+    # Home route
+    @app.route("/")
     def home():
-        return 'Authors API for many times'
-    
-    
-    return app  
+        return "Authors API"
+
+    return app
+
+# Only run the app if this script is executed directly
+if __name__ == "__main__":
+    app = create_app()
+    app.run(debug=True)
