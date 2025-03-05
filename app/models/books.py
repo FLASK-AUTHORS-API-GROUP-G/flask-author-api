@@ -18,12 +18,12 @@ class Book(db.Model):
     author = db.relationship('Author', backref = 'books') # backref property navigates us back to the parent class which is now the authors from 
     #the child class which is books. Meaning an author can publish one or more books
     company = db.relationship('Company', backref = 'books') # A company can ave many books.
-    time_stamp = db.Column(db.DateTime, default= datetime.now())
+    created_at = db.Column(db.DateTime, default= datetime.now())
     updated_at = db.Column(db.DateTime, onupdate = datetime.now())
     
     
     
-    def __init__ (self, title, price, description ,genre, pages, price_unit, publication_date, isbn, image, company_id, author_id ):              
+    def __init__ (self, title, price, description ,genre, pages, price_unit, publication_date, isbn, company_id, author_id, image, created_at, updated_at ):              
           super(Book, self).__init__()
           self.title = title   
           self.price = price           
@@ -33,9 +33,11 @@ class Book(db.Model):
           self.price_unit = price_unit
           self.publication_date = publication_date
           self.isbn = isbn
-          self.image = image
           self.author_id = author_id
           self.company_id = company_id
+          self.image = image
+          self.created_at = created_at
+          self.updated_at = updated_at
           
     def __repr__(self):
         return f"Book {self.title}"

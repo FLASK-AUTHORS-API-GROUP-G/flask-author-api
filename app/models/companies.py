@@ -9,16 +9,18 @@ class Company(db.Model):
     description = db.Column(db.Text(200), nullable = False)
     author_id = db.Column(db.Integer, db.ForeignKey("authors.id")) #foreign key from the authors model
     author = db.relationship('Author', backref = 'companies')  #Relationship between the user and the company(this is basically a one to many relationship)
-    time_stamp = db.Column(db.DateTime, default= datetime.now())
+    created_at = db.Column(db.DateTime, default= datetime.now())
     updated_at = db.Column(db.DateTime, onupdate = datetime.now())
     
     
-    def __init__ (self, name, origin, description, author_id):              
+    def __init__ (self, name, origin, description, author_id, created_at, updated_at):              
           super(Company, self).__init__()
           self.name = name   
-          self.origin = origin           
+          self.origin = origin       
           self.description = description
           self.author_id = author_id
+          self.created_at = created_at    
+          self.updated_at = updated_at
           
     
     def __repr__(self):

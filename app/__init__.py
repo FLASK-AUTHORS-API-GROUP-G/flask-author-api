@@ -1,5 +1,6 @@
 from flask import Flask
-from app.extensions import db, migrate
+from app.extensions import db, migrate, jwt
+from app.controllers.auth.auth_controller import auth
 
 
 #application factory function.
@@ -11,6 +12,12 @@ def create_app():
      
      db.init_app(app) # initialise the db second
      migrate.init_app(app, db) # then u migrate
+     jwt.init_app(app)
+     
+     
+     
+     #registering and importing models
+     app.register_blueprint(auth)
      
      
      
