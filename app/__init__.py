@@ -1,39 +1,37 @@
-
 from flask import Flask
-from app.extensions import db, migrate, jwt
-from flask_bcrypt import Bcrypt
+from app.extensions  import  db , migrate
+from app.extensions import db, migrate
+from app.extensions import db
+from app.controllers.author.auth_controller import author
 
-# Initialize Bcrypt outside the create_app function
-bcrypt = Bcrypt()
 
-from app.Controllers.auth.auth_controllers import auth
 
-def create_app():
-    # Application factory function
-    app = Flask(__name__)
-    app.config.from_object('config.Config')
+def create_app(): #creating  application factory function 
+
+    app = Flask(__name__) # its used to define the root application
+    #index route since its the first route
     
-    # Initialize extensions
+    app.config.from_object('config.Config') 
     db.init_app(app)
-    migrate.init_app(app, db)
-    jwt.init_app(app)
+    migrate.init_app(app,db)
     
-    # Import models
-    from app.Models.author_model import Author
-    from app.Models.book_model import Book
-    from app.Models.company_model import Company
 
-    # Register blueprints
-    app.register_blueprint(auth)
+    #importing and registering the models
+    from app.models.authors_model import Author
+    from app.models.books_model import Book
+    from app.models.company_model import Company 
 
-    # Home route
+    # registering blue prints
+    app.register_blueprint(author
+    )
+
+
+
+
+
     @app.route("/")
-    def home():
-        return "Authors API"
+    def index():
+        return 'hello'
 
-    return app
+    return app  #returning the application instance  an instance is an object from the class
 
-# Only run the app if this script is executed directly
-if __name__ == "__main__":
-    app = create_app()
-    app.run(debug=True)
