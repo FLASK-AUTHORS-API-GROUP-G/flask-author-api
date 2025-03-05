@@ -1,41 +1,37 @@
 from flask import Flask
-from app.extensions import db, migrate, jwt
-from app.controllers.auth.auth_controller import auth
+from app.extensions  import  db , migrate
+from app.extensions import db, migrate
+from app.extensions import db
+from app.controllers.author.auth_controller import author
 
 
-#application factory function.
-def create_app():
-     
-     #app instance
-     app =  Flask(__name__)
-     app.config.from_object('config.Config')  #Configuration comes fast.
-     
-     db.init_app(app) # initialise the db second
-     migrate.init_app(app, db) # then u migrate
-     jwt.init_app(app)
-     
-     
-     
-     #registering and importing models
-     app.register_blueprint(auth)
-     
-     
-     
-     # Importing and registering models
-     
-     from app.models.authors import Author
-     from app.models.companies import Company
-     from app.models.books import Book
-     
-     
-     @app.route("/")
-     def home(app):       #Initializing out database instance on our app variable
-          return "Authors API Project"
+
+def create_app(): #creating  application factory function 
+
+    app = Flask(__name__) # its used to define the root application
+    #index route since its the first route
+    
+    app.config.from_object('config.Config') 
+    db.init_app(app)
+    migrate.init_app(app,db)
+    
+
+    #importing and registering the models
+    from app.models.authors_model import Author
+    from app.models.books_model import Book
+    from app.models.company_model import Company 
+
+    # registering blue prints
+    app.register_blueprint(author
+    )
 
 
-     return app
 
 
-if __name__ == '__main__':
-   create_app.run()
-   
+
+    @app.route("/")
+    def index():
+        return 'hello'
+
+    return app  #returning the application instance  an instance is an object from the class
+
