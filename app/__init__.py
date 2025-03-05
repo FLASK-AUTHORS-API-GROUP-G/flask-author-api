@@ -1,41 +1,31 @@
+# Application factory function(Define the app instance within the function) helps to rellate with different 3rd party libraries
 from flask import Flask
-from app.extensions import db, migrate, jwt
+from app.extensions import db,migrate,jwt
 from app.controllers.auth.auth_controller import auth
 
-
-#application factory function.
 def create_app():
-     
-     #app instance
-     app =  Flask(__name__)
-     app.config.from_object('config.Config')  #Configuration comes fast.
-     
-     db.init_app(app) # initialise the db second
-     migrate.init_app(app, db) # then u migrate
-     jwt.init_app(app)
-     
-     
-     
-     #registering and importing models
-     app.register_blueprint(auth)
-     
-     
-     
-     # Importing and registering models
-     
-     from app.models.authors import Author
-     from app.models.companies import Company
-     from app.models.books import Book
-     
-     
-     @app.route("/")
-     def home(app):       #Initializing out database instance on our app variable
-          return "Authors API Project"
-
-
-     return app
-
-
-if __name__ == '__main__':
-   create_app.run()
+    
+    app = Flask(__name__) 
+    app.config.from_object('config.Config')   
+    db.init_app(app)   
+    migrate.init_app(app,db)    
+    jwt.init_app(app)
    
+    
+    
+    # importing and registering models
+    from app.models.author_model import Author
+    from app.models.company_model import Company
+    from app.models.books_model import Book
+    
+    
+    #registering blue prints
+    app.register_blueprint(auth)
+    
+    
+    @app.route('/')
+    def home():
+        return 'Authors API for many times'
+    
+    
+    return app  
