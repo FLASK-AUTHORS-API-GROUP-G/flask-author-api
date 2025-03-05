@@ -1,27 +1,33 @@
+# class Company :
+    # def __init__(self , id,origin , description ,created_at , updated_at):
+       # self.id = id
+       # self.origin = origin
+        #self.desription= description
+        #self.created_at = created_at
+       # self.updated-at =updated_at
+
+
+from  datetime import datetime
 from app.extensions import db
-from datetime import datetime
-class Company(db.Model):
-    __tablename__= "companys"
-    id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(50), nullable=False)
-    origin = db.Column(db.String(50), nullable=False)
-    author_id = db.Column(db.Integer, db.ForeignKey('authors.id'))
-    description = db.Column(db.String(50), nullable=False)
-    location = db.Column(db.String(50), nullable=False,unique=True )
-    created_at= db.Column(db.Text(), nullable=False)
-    author = db.relationship('Author', backref = 'companys')
 
+class Company (db.Model):
+    __tablename__ = 'companies'
+    id = db.Column( db.Integer, primary_key =True)
+    name = db.Column(db.String(100),unique=True , nullable=False)
+    origin = db. Column(db.String(100))
+    discription = db.Column(db.String(150))
+    Author_id = db.Column(db.Integer,db.ForeignKey('authors.id'))
+    created_at= db. Column (db.DateTime,default=datetime.now())
+    updated_at= db.Column (db.DateTime,onupdate=datetime.now())
 
-    def __init__(self, id, name, description, origin, location, other_books, created_at, owner):
-        super(Company,self).__init__()
+class Company :
+     def __init__(self , id, name,origin , description ,created_at , updated_at):
         self.id = id
         self.name = name
-        self.description = description
-        self.location = location
+        self.origin = origin
+        self.desription= description
         self.created_at = created_at
-        self.owner = owner
-
-    def __author_details(self, id, name, description, origin, location, other_books, created_at, owner):
-        return f"The book is {self.name} described by{self.description} found at{self.location} created at {self.created_at} ownwed by{self.owner}"
-
-
+        self.updated_at =updated_at
+        def author_info(self):
+        
+           print(f" name{self.name},origin{ self.origin} ,description{self.discription} , created_at{self.created_at}, updated_at{self.updated_at}")
